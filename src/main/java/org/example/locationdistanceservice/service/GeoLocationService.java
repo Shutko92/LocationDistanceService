@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class GeoLocationService {
     private final GeoLocationMapper geoLocationMapper;
-    private static final String YANDEX_GEOCODER_URL = "https://geocode-maps.yandex.ru/1.x/?geocode=%s&apikey=%s&format=json";
+    private final String YANDEX_GEOCODER_URL = "https://geocode-maps.yandex.ru/1.x/?geocode=%s&apikey=%s&format=json";
     @Value("${yandex_geocoder.api_key}")
     private String API_KEY;
 
