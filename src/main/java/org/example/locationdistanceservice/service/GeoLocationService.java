@@ -36,19 +36,22 @@ public class GeoLocationService {
     }
 
     private String getAddress(double[] position) {
-        CloseableHttpClient client = HttpClients.createDefault();
-        String url = String.format(YANDEX_GEOCODER_URL, position[1] + "," + position[0], API_KEY);
-        HttpGet request = new HttpGet(url);
+        try (CloseableHttpClient client = HttpClients.createDefault()) {
+            String url = String.format(YANDEX_GEOCODER_URL, position[1] + "," + position[0], API_KEY);
+            HttpGet request = new HttpGet(url);
 
-        try (CloseableHttpResponse response = client.execute(request)) {
-            String jsonResponse = EntityUtils.toString(response.getEntity());
-            JsonNode rootNode = new ObjectMapper().readTree(jsonResponse);
+            try (CloseableHttpResponse response = client.execute(request)) {
+                String jsonResponse = EntityUtils.toString(response.getEntity());
+                JsonNode rootNode = new ObjectMapper().readTree(jsonResponse);
 
-            return rootNode.path("response").path("GeoObjectCollection")
-                    .path("featureMember").get(0).path("GeoObject")
-                    .path("metaDataProperty")
-                    .path("GeocoderMetaData")
-                    .path("text").asText();
+                return rootNode.path("response").path("GeoObjectCollection")
+                        .path("featureMember").get(0).path("GeoObject")
+                        .path("metaDataProperty")
+                        .path("GeocoderMetaData")
+                        .path("text").asText();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
