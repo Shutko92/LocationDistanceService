@@ -1,0 +1,5 @@
+server:
+  port: 9001
+
+yandex_geocoder:
+  api_key: 12589c6c-9fd3-47e5-aa87-6d9f8b14353c
